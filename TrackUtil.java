@@ -23,7 +23,7 @@ public class TrackUtil {
 
         File dir = new File(trackList.getPath().getValue());
         if (!dir.exists() || !dir.isDirectory()) {
-            System.out.println("Cannot find audio source directory: " + dir + " please supply a directory as a command line argument");
+            System.out.println("Error");
         }
 
         for (String file : dir.list((File dir1, String name) -> {

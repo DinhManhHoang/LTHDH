@@ -6,6 +6,17 @@
  * @web https://statickidz.com
  */
 
+.delete-track-button {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 12pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-opacity: 0.3;
+}
+
+.delete-track-button:hover {
+    -fx-opacity: 0.8;
+}
+
 .button {
     -fx-padding: 5 22 5 22;   
     -fx-border-color: #e2e2e2;

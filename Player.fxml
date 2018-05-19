@@ -46,7 +46,7 @@
                         <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="489.0" styleClass="label-title" text="Tittle" textAlignment="CENTER" AnchorPane.bottomAnchor="134.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
                         <Label fx:id="artistLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="516.0" mouseTransparent="true" styleClass="label-author" text="Artist" textAlignment="CENTER" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
                         <ListView fx:id="trackListView" layoutY="79.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0" />
-                        <Label layoutY="64.0" onMouseClicked="#handleNewTrackList" styleClass="label-new-playlist" text="Playlist" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+                        <Label layoutY="64.0" onMouseClicked="#handleNewTrackList" styleClass="label-new-playlist" text="Add new Playlist" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                              <cursor>
                                 <Cursor fx:constant="HAND" />
                              </cursor>

@@ -1,9 +1,15 @@
 package sample;
 
-import java.util.prefs.Preferences;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TreeCell;
 
 public class TrackListUtil {
 
@@ -12,45 +18,71 @@ public class TrackListUtil {
     private static final String TRACKLIST_NAME = "TRACKLIST_";
     private static final String TRACKLIST_PATH = "TRACKLIST_PATH_";
 
-    private static final Preferences prefs = Preferences.userRoot().node(TRACKLIST_NODE);
-
     public static void saveTrackList(TrackList trackList) {
-        int trackListNumber = getTrackListsNumber() + 1;
-        prefs.put(TRACKLIST_NAME + trackListNumber, trackList.getName().getValue());
-        prefs.put(TRACKLIST_PATH + trackListNumber, trackList.getPath().getValue());
-        prefs.putInt(TRACKLIST_NUMBER, trackListNumber);
+        List<TrackList> trackLists = readData();
+        trackLists.add(trackList);
+        writeData(trackLists);
     }
 
-    public static int getTrackListsNumber() {
-        return prefs.getInt(TRACKLIST_NUMBER, 0);
+    public static List<TrackList> readData() {
+        List<TrackList> trackLists = new ArrayList<>();
+        try {
+            Scanner inputFile = new Scanner(new File("src/sample/data.dt"));
+            int listCount = Integer.parseInt(inputFile.nextLine());
+            for (int i = 0; i < listCount; i++) {
+                String listName = inputFile.nextLine();
+                String listPath = inputFile.nextLine();
+                TrackList trackList = new TrackList(i, listName, listPath);
+                trackLists.add(trackList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return trackLists;
+    }
+
+    public static void writeData(List<TrackList> trackLists) {
+        try {
+            FileWriter fw = new FileWriter("src/sample/data.dt", false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(String.valueOf(trackLists.size()));
+            bw.newLine();
+            for (int i = 0; i < trackLists.size(); i++) {
+                bw.write(trackLists.get(i).getName().getValue());
+                bw.newLine();
+                bw.write(trackLists.get(i).getPath().getValue());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static ObservableList<TrackList> getAll() {
-
-        ObservableList<TrackList> trackLists = FXCollections.observableArrayList();
-
-        for(int index = 1; index <= getTrackListsNumber(); index++) {
-            String listName = prefs.get(TRACKLIST_NAME + index, null);
-            String listPath = prefs.get(TRACKLIST_PATH + index, null);
-            TrackList trackList = new TrackList(index, listName, listPath);
-            trackLists.add(trackList);
-        }
-
+        ObservableList<TrackList> trackLists = FXCollections.observableArrayList(readData());
         return trackLists;
     }
 
     public static void deleteAll() {
-        for(int index = 0; index < getTrackListsNumber(); index++) {
-            prefs.remove(TRACKLIST_NAME + index);
-            prefs.remove(TRACKLIST_PATH + index);
-            prefs.putInt(TRACKLIST_NUMBER, 0);
-        }
+        List<TrackList> trackLists = new ArrayList<>();
+        writeData(trackLists);
     }
 
     public static void delete(TrackList trackList) {
-        prefs.remove(TRACKLIST_NAME + trackList.getId().getValue());
-        prefs.remove(TRACKLIST_PATH + trackList.getId().getValue());
-        prefs.putInt(TRACKLIST_NUMBER, prefs.getInt(TRACKLIST_NUMBER, 0) - 1);
+        List<TrackList> trackLists = readData();
+        TrackList target = null;
+        for (int i = 0; i < trackLists.size(); i++) {
+            if (trackLists.get(i).getName().getValue().compareTo(trackList.getName().getValue()) == 0) {
+                target = trackLists.get(i);
+                break;
+            }
+        }
+        if (target != null) {
+            trackLists.remove(target);
+        }
+        writeData(trackLists);
     }
 
     public static void refreshList(ListView listView) {

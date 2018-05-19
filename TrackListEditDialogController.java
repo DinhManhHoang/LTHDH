@@ -19,8 +19,6 @@ public class TrackListEditDialogController {
     @FXML
     private AnchorPane dialogAnchorPane;
 
-    @FXML
-    private Button deleteTrackListButton;
 
     private Stage dialogStage;
     private TrackList trackList;
@@ -39,7 +37,7 @@ public class TrackListEditDialogController {
         this.trackList = trackList;
         nameField.setText(trackList.getName().getValue());
         if(trackList.getId().getValue() == 0) {
-            deleteTrackListButton.setDisable(true);
+
         }
     }
 

@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,6 +26,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -36,6 +41,38 @@ public class PlayerController {
 
     @FXML
     private ListView<TrackList> trackListView;
+    private class CLVCell extends ListCell<TrackList> {
+        HBox hbox = new HBox();
+        Label label = new Label("");
+        Pane pane = new Pane();
+        Button button = new Button("x");
+        TrackList lastItem;
+
+        public CLVCell() {
+            super();
+            button.getStyleClass().clear();
+            button.getStyleClass().add("delete-track-button");
+            hbox.getChildren().addAll(label, pane, button);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            button.setOnAction(event -> {
+                handleDeleteTrackList(lastItem);
+            });
+        }
+
+        protected void updateItem(TrackList item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(null);
+            if (empty) {
+                lastItem = null;
+                setGraphic(null);
+            } else {
+                lastItem = item;
+                label.setText(item!=null ? item.getName().getValue() : "<null>");
+                setGraphic(hbox);
+            }
+        }
+    }
+
     private ObservableList<TrackList> observableTrackListsView;
 
     @FXML
@@ -130,14 +167,25 @@ public class PlayerController {
         if(prevTrack != null) playTrack(prevTrack);
     }
 
+    private void refreshView() {
+        observableTrackListsView = TrackListUtil.getAll();
+        TrackListUtil.refreshList(trackListView);
+        TrackUtil.refreshTable(trackTableView);
+    }
+
     @FXML
     private void handleNewTrackList() {
         TrackList tempTrackList = new TrackList();
         boolean okClicked = mainApp.showTrackListDialog(tempTrackList);
         if (okClicked) {
             TrackListUtil.saveTrackList(tempTrackList);
-            observableTrackListsView.add(tempTrackList);
+            refreshView();
         }
+    }
+
+    private void handleDeleteTrackList(TrackList x) {
+        TrackListUtil.delete(x);
+        refreshView();
     }
 
     @FXML
@@ -173,13 +221,6 @@ public class PlayerController {
 
     @FXML
     private void handleCredits() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.initStyle(StageStyle.UTILITY);
-        alert.setTitle("Credit");
-        alert.setHeaderText(null);
-        alert.setContentText("Built upon Adrián Barrio Andrés's project \r\nhttps://statickidz.com/");
-
-        alert.showAndWait();
     }
 
     private void setupTrackListView() {
@@ -188,31 +229,8 @@ public class PlayerController {
         trackListView.setItems(observableTrackListsView);
 
         trackListView.setCellFactory((ListView<TrackList> p) -> {
-            ListCell<TrackList> cell = new ListCell<TrackList>() {
-                @Override
-                protected void updateItem(TrackList trackList, boolean bln) {
-                    super.updateItem(trackList, bln);
-                    if (trackList != null) {
-                        setText("  "+trackList.getName().getValue());
-                    }
-                }
-            };
+            ListCell<TrackList> cell = new CLVCell();
             return cell;
-        });
-
-        trackListView.setOnMouseClicked((MouseEvent click) -> {
-            if (click.getClickCount() == 2) {
-                TrackList selectedTrackList = trackListView.getSelectionModel().getSelectedItem();
-                if (selectedTrackList != null) {
-                    boolean okClicked = mainApp.showTrackListDialog(selectedTrackList);
-                    if (okClicked) {
-                        TrackListUtil.saveTrackList(selectedTrackList);
-                        observableTrackListsView.add(selectedTrackList);
-                    }
-                        TrackListUtil.refreshList(trackListView);
-                        TrackUtil.refreshTable(trackTableView);
-                }
-            }
         });
 
         trackListView.getSelectionModel().selectedItemProperty().addListener(
@@ -245,9 +263,9 @@ public class PlayerController {
 
     private void showTrackListDetails(TrackList trackList) {
         if (trackList != null) {
-                observableTracksView = TrackUtil.getAll(trackList, trackTableView);
-                trackTableView.setItems(observableTracksView);
-                TrackUtil.refreshTable(trackTableView);
+            observableTracksView = TrackUtil.getAll(trackList, trackTableView);
+            trackTableView.setItems(observableTracksView);
+            TrackUtil.refreshTable(trackTableView);
         }
     }
 

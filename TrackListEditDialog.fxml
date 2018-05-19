@@ -18,8 +18,6 @@
 </GridPane>
 <HBox alignment="CENTER" layoutX="197.1875" layoutY="241.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 <children><Button defaultButton="true" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleSelectFolder" prefHeight="33.0" prefWidth="177.0" text="Select directory" /><Button layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="110.0" text="Cancel" />
-            <Button fx:id="deleteTrackListButton" mnemonicParsing="false" onAction="#handleDeleteTrackList" text="Del">
-            </Button>
 </children>
 </HBox>
 </children></AnchorPane>
