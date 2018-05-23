@@ -9,14 +9,8 @@ import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TreeCell;
 
 public class TrackListUtil {
-
-    private static final String TRACKLIST_NODE = "trackio.tracklists";
-    private static final String TRACKLIST_NUMBER = "TRACKLIST_NUMBER";
-    private static final String TRACKLIST_NAME = "TRACKLIST_";
-    private static final String TRACKLIST_PATH = "TRACKLIST_PATH_";
 
     public static void saveTrackList(TrackList trackList) {
         List<TrackList> trackLists = readData();
@@ -63,11 +57,6 @@ public class TrackListUtil {
     public static ObservableList<TrackList> getAll() {
         ObservableList<TrackList> trackLists = FXCollections.observableArrayList(readData());
         return trackLists;
-    }
-
-    public static void deleteAll() {
-        List<TrackList> trackLists = new ArrayList<>();
-        writeData(trackLists);
     }
 
     public static void delete(TrackList trackList) {

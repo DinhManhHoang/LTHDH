@@ -7,7 +7,6 @@ import java.io.File;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
@@ -43,12 +42,6 @@ public class TrackListEditDialogController {
 
     public boolean isOkClicked() {
         return okClicked;
-    }
-
-    @FXML
-    private void handleDeleteTrackList() {
-        TrackListUtil.delete(trackList);
-        dialogStage.close();
     }
 
     @FXML
@@ -91,4 +84,3 @@ public class TrackListEditDialogController {
         }
     }
 }
-

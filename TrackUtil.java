@@ -28,7 +28,7 @@ public class TrackUtil {
 
         for (String file : dir.list((File dir1, String name) -> {
             for(String ext : SUPPORTED_FILE_EXTENSIONS) {
-                if (name.endsWith(ext)) {
+                if (name.toLowerCase().endsWith(ext)) {
                     return true;
                 }
             }

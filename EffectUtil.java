@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
@@ -20,19 +19,6 @@ public class EffectUtil {
 
     private static double initialX;
     private static double initialY;
-
-    public static void addDragListeners(final Node n, Stage primaryStage) {
-
-        n.setOnMousePressed((MouseEvent mouseEvent) -> {
-            EffectUtil.x = n.getScene().getWindow().getX() - mouseEvent.getScreenX();
-            EffectUtil.y = n.getScene().getWindow().getY() - mouseEvent.getScreenY();
-        });
-
-        n.setOnMouseDragged((MouseEvent mouseEvent) -> {
-            primaryStage.setX(mouseEvent.getScreenX() + EffectUtil.x);
-            primaryStage.setY(EffectUtil.y + mouseEvent.getScreenY());
-        });
-    }
 
     public static void addDragListeners(final Node n) {
         n.setOnMousePressed((MouseEvent me) -> {
@@ -55,8 +41,7 @@ public class EffectUtil {
     }
 
     public static SequentialTransition fadeTransition(final ImageView iv, final Image img) {
-        FadeTransition fadeOutTransition
-                = new FadeTransition(Duration.seconds(0.4), iv);
+        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.4), iv);
         fadeOutTransition.setFromValue(1.0);
         fadeOutTransition.setToValue(0.3);
         fadeOutTransition.setOnFinished((ActionEvent arg0) -> {
@@ -69,7 +54,6 @@ public class EffectUtil {
         fadeInTransition.setToValue(1.0);
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(fadeOutTransition, fadeInTransition);
-
         return sequentialTransition;
     }
 
@@ -92,8 +76,4 @@ public class EffectUtil {
         return sequentialTransition;
     }
 
-    private static class Delta {
-
-        double x, y;
-    }
 }

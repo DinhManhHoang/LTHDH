@@ -202,13 +202,11 @@ public class PlayerController {
             mainApp.getPrimaryStage().setMaxWidth(1040);
             mainApp.getPrimaryStage().setMaxHeight(650);
             mainApp.getPrimaryStage().centerOnScreen();
-
             InputStream minimizeImage = PlayerController.class.getResourceAsStream("img/top-square.png");
             maximizeImageView.setImage(new Image(minimizeImage));
         } else {
             maximized = true;
             mainApp.getPrimaryStage().setMaximized(true);
-
             InputStream maximizeImage = PlayerController.class.getResourceAsStream("img/top-shrink.png");
             maximizeImageView.setImage(new Image(maximizeImage));
         }
@@ -246,7 +244,6 @@ public class PlayerController {
                 cellData -> cellData.getValue().getAlbum());
         yearColumn.setCellValueFactory(
                 cellData -> cellData.getValue().getYear());
-
         trackTableView.setRowFactory( tv -> {
             TableRow<Track> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -257,7 +254,6 @@ public class PlayerController {
             });
             return row ;
         });
-
     }
 
 
